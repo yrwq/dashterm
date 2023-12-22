@@ -1,5 +1,9 @@
 <script lang="ts">
+    // TODO: titlebar
+    // TODO: 3 terminals with flexbox, change terminals with a key
+    // TODO: store bookmarks
     import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
 
     // variables
 
@@ -9,6 +13,10 @@
     let cmd
     // holds the last used command
     let last_cmd
+    // holds the value of the prompt icon
+    let prompt_icon = ":: "
+    // holds the output of a command
+    let content = ""
 
     // functions
 
@@ -20,12 +28,18 @@
         switch(cmd) {
             case "help": {
                 cmd = ""
-                alert("help")
+                content = "help, clear"
                 break
             }
-            default:
+            case "clear": {
+                cmd = ""
+                content = ""
+                break
+            }
+            default: {
                 cmd = ""
                 break
+            }
         }
     }
 
@@ -48,10 +62,12 @@
 </script>
 
 <main>
-    <input id="name" type="text" bind:value={cmd} bind:this={inp}>
+    <div id="terminal">
+        <div id="content">{content}</div>
+        <div id="prompt">
+            {prompt_icon} <input id="name" type="text" bind:value={cmd} bind:this={inp}>
+        </div>
+    </div>
 </main>
-
-<style>
-</style>
 
 <svelte:window on:keydown={handle_keys} />
