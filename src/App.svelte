@@ -1,9 +1,19 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
+
+    // variables
+
+    // represents the main inputbox where commands go
+    let inp
     // holds the current command
     let cmd
     // holds the last used command
     let last_cmd
 
+    // functions
+
+    // handle each command
+    // TODO: move to a comp
     function handle_command() {
         // set last cmd
         last_cmd = cmd
@@ -19,6 +29,7 @@
         }
     }
 
+    // handle key presses, i use if instead of switch
     function handle_keys(e) {
         // enter
 	    if(e.keyCode == 13) {
@@ -29,11 +40,15 @@
             cmd = last_cmd
         }
     }
+
+    onMount(() => {
+        inp.focus()
+    })
 	
 </script>
 
 <main>
-    <input id="name" type="text" bind:value={cmd} autofocus>
+    <input id="name" type="text" bind:value={cmd} bind:this={inp}>
 </main>
 
 <style>
