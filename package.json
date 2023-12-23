@@ -1,6 +1,6 @@
 {
   "name": "dashterm",
-  "homepage": "https://yrwq.github.io/dashterm/",
+  "homepage": "./",
   "version": "0.0.1",
   "type": "module",
   "scripts": {

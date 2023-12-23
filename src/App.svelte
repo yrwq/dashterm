@@ -10,34 +10,60 @@
     // represents the main inputbox where commands go
     let inp
     // holds the current command
-    let cmd
+    let cmd = ""
     // holds the last used command
     let last_cmd
     // holds the value of the prompt icon
     let prompt_icon = ":: "
     // holds the output of a command
     let content = ""
+    // holds the whole command given in arrar
+    let cmd_arr
 
-    // functions
+    // holds bookmarks added
+    // TODO
+    let bm = []
+
+    function bm_add(name, url) {
+        localStorage.setItem(name, url)
+    }
+
+    function bm_get(name) {
+        return localStorage.getItem(name)
+    }
 
     // handle each command
     // TODO: move to a comp
     function handle_command() {
-        // set last cmd
+        // set last cmd to current
         last_cmd = cmd
-        switch(cmd) {
-            case "help": {
+        // make an array out of the whole command
+        cmd_arr = cmd.split(" ");
+
+        // switch the first index of the command
+        switch(cmd_arr[0]) {
+            case "add": {
+                bm_add(cmd_arr[1], cmd_arr[2])
                 cmd = ""
+                break
+            }
+            case "open": {
+                let url = bm_get(cmd_arr[1])
+                window.open("https://" + url, "_blank")
+                cmd = ""
+                break
+            }
+            case "help": {
                 content = "help, clear"
+                cmd = ""
                 break
             }
             case "clear": {
-                cmd = ""
                 content = ""
+                cmd = ""
                 break
             }
             default: {
-                cmd = ""
                 break
             }
         }
@@ -45,6 +71,7 @@
 
     // handle key presses, i use if instead of switch
     function handle_keys(e) {
+        inp.focus()
         // enter
 	    if(e.keyCode == 13) {
             handle_command()
