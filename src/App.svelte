@@ -20,7 +20,6 @@
     let cmd_arr
 
     // holds bookmarks added
-    // TODO: after refreshing, the page bookmarks gone
     let bm = []
 
     // add https:// before url, if not given
@@ -34,32 +33,38 @@
 
     // add a bookmark to local storage
     function bm_add(name, url) {
+        refresh()
         localStorage.setItem(name, format_url(url))
         let new_bm = { "key": name , "value": url }
         bm.push(new_bm)
+        refresh()
     }
 
     // get a bookmark's value from local storage
     function bm_get(name) {
+        refresh()
         return localStorage.getItem(name)
+        refresh()
     }
 
     // get a bookmark's value from local storage
     // TODO: remove item from bm var too
     function bm_del(name) {
+        refresh()
         return localStorage.removeItem(name)
+        refresh()
+
     }
 
     function bm_list() {
         refresh()
-        let k
-        let v
+        let k, v
         for (let i of bm) {
             k = i.key
-            console.log(k)
             v = i.value
             content += `<a href="` + v + `" target="_blank">` + k + `</a>`
         }
+        refresh()
     }
 
     function refresh() {
@@ -92,14 +97,12 @@
             }
             case "rm":
             case "del": {
-                bm_list()
                 bm_del(cmd_arr[1])
                 cmd = ""
                 break
             }
             case "touch":
             case "add": {
-                bm_list()
                 bm_add(cmd_arr[1], cmd_arr[2])
                 cmd = ""
                 break
