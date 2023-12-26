@@ -1,7 +1,6 @@
 <script lang="ts">
     // TODO: titlebar
     // TODO: 3 terminals with flexbox, change terminals with a key
-    // TODO: store bookmarks
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
@@ -43,6 +42,11 @@
         return localStorage.getItem(name)
     }
 
+    // get a bookmark's value from local storage
+    function bm_del(name) {
+        return localStorage.removeItem(name)
+    }
+
     // handle each command
     // TODO: move to a comp
     function handle_command() {
@@ -53,6 +57,11 @@
 
         // switch the first index of the command
         switch(cmd_arr[0]) {
+            case "del": {
+                bm_del(cmd_arr[1])
+                cmd = ""
+                break
+            }
             case "add": {
                 bm_add(cmd_arr[1], cmd_arr[2])
                 cmd = ""
