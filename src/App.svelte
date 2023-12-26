@@ -6,7 +6,7 @@
 
     // variables
 
-    // represents the main inputbox where commands go
+    // holds the value of main inputbox where commands go
     let inp
     // holds the current command
     let cmd = ""
@@ -20,7 +20,7 @@
     let cmd_arr
 
     // holds bookmarks added
-    // TODO
+    // TODO: after refreshing, the page bookmarks gone
     let bm = []
 
     // add https:// before url, if not given
@@ -35,6 +35,8 @@
     // add a bookmark to local storage
     function bm_add(name, url) {
         localStorage.setItem(name, format_url(url))
+        let new_bm = { "key": name , "value": url }
+        bm.push(new_bm)
     }
 
     // get a bookmark's value from local storage
@@ -84,6 +86,7 @@
                 break
             }
             default: {
+                cmd = ""
                 break
             }
         }
