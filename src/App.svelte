@@ -24,10 +24,21 @@
     // TODO
     let bm = []
 
-    function bm_add(name, url) {
-        localStorage.setItem(name, url)
+    // add https:// before url, if not given
+    function format_url(url) {
+        let formatted = url;
+        if (!/^http|https:\/\//.test(formatted)) {
+            formatted = "https://" + formatted;
+        }
+        return formatted;
     }
 
+    // add a bookmark to local storage
+    function bm_add(name, url) {
+        localStorage.setItem(name, format_url(url))
+    }
+
+    // get a bookmark's value from local storage
     function bm_get(name) {
         return localStorage.getItem(name)
     }
@@ -49,7 +60,7 @@
             }
             case "open": {
                 let url = bm_get(cmd_arr[1])
-                window.open("https://" + url, "_blank")
+                window.open(url, "_blank")
                 cmd = ""
                 break
             }
