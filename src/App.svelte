@@ -45,8 +45,30 @@
     }
 
     // get a bookmark's value from local storage
+    // TODO: remove item from bm var too
     function bm_del(name) {
         return localStorage.removeItem(name)
+    }
+
+    function bm_list() {
+        refresh()
+        let k
+        let v
+        for (let i of bm) {
+            k = i.key
+            console.log(k)
+            v = i.value
+            content += `<a href="` + v + `" target="_blank">` + k + `</a>`
+        }
+    }
+
+    function refresh() {
+        bm = []
+        let new_bm
+        for (const [key, value] of Object.entries(localStorage)) {
+            new_bm = { "key": key , "value": value }
+            bm.push(new_bm)
+        }
     }
 
     // handle each command
@@ -59,16 +81,30 @@
 
         // switch the first index of the command
         switch(cmd_arr[0]) {
+            case "ls":
+            case "l":
+            case "la":
+            case "list": {
+                content = ""
+                bm_list()
+                cmd = ""
+                break
+            }
+            case "rm":
             case "del": {
+                bm_list()
                 bm_del(cmd_arr[1])
                 cmd = ""
                 break
             }
+            case "touch":
             case "add": {
+                bm_list()
                 bm_add(cmd_arr[1], cmd_arr[2])
                 cmd = ""
                 break
             }
+            case "o":
             case "open": {
                 let url = bm_get(cmd_arr[1])
                 window.open(url, "_blank")
@@ -107,13 +143,14 @@
 
     onMount(() => {
         inp.focus()
+        refresh()
     })
 	
 </script>
 
 <main>
     <div id="terminal">
-        <div id="content">{content}</div>
+        <div id="content">{@html content}</div>
         <div id="prompt">
             {prompt_icon} <input id="name" type="text" bind:value={cmd} bind:this={inp}>
         </div>
