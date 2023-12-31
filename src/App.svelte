@@ -1,6 +1,13 @@
 <script lang="ts">
     // TODO: titlebar
     // TODO: 3 terminals with flexbox, change terminals with a key
+    // TODO: option to add tags to bookmarks
+    // TODO: list bookmarks of given tag
+
+    // TODO: editable config section to change
+    // - prompt icon
+    // - theme
+    // - engine
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
@@ -86,6 +93,13 @@
 
         // switch the first index of the command
         switch(cmd_arr[0]) {
+            case "find":
+            case "search": {
+                const term = cmd_arr.filter((value, index) => 0 !== index);
+                window.open("https://google.com/search?query=" + term, "_blank")
+                cmd = ""
+                break
+            }
             case "ls":
             case "l":
             case "la":
@@ -152,12 +166,12 @@
 </script>
 
 <main>
-    <div id="terminal">
-        <div id="content">{@html content}</div>
-        <div id="prompt">
-            {prompt_icon} <input id="name" type="text" bind:value={cmd} bind:this={inp}>
-        </div>
+<div id="terminal">
+    <div id="content">{@html content}</div>
+    <div id="prompt">
+        {prompt_icon} <input id="name" type="text" bind:value={cmd} bind:this={inp}>
     </div>
+</div>
 </main>
 
 <svelte:window on:keydown={handle_keys} />
